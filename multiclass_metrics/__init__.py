@@ -24,11 +24,12 @@ def _inject_missing_labels(
     y_true: np.ndarray, y_score: np.ndarray, labels: np.ndarray
 ) -> Tuple[np.ndarray, List[str]]:
     """
-    returns: new probability matrix, class names in order for that matrix
+    Returns: new probability matrix, class names in order for that matrix
 
     (for binary classification, converts to and returns probability martix, rather than single vector corresponding to labels[1])
 
-    arguments:
+    Arguments:
+
     - y_true: all ground truth labels
     - y_score: predicted probabilities matrix values
     - labels: column names for y_score (i.e. class names)
@@ -91,22 +92,21 @@ def _multiclass_score(
     """
     Multiclass probabilistic score with missing labels:
 
-    For multiclass situations where classifier does not learn to predict a certain class, but that class exists in test data:
-    Allow running ROC-AUC (or other probabilistic score like auPRC) by inserting missing labels into predict_proba output with probability 0.
+    For multiclass situations where classifier does not learn to predict a certain class, but that class exists in test data: allow running ROC-AUC (or other probabilistic score like auPRC) by inserting missing labels into predict_proba output with probability 0.
 
-    Also handles `y_true` not including all the classes listed in `labels`. TODO: docs.
+    Also handles `y_true` not including all the classes listed in `labels`.
 
-    Falls back to standard score if all labels are present:
-    Follows the sklearn implementation but not restricted to ROC AUC and does not require probabilities to sum to 1
-    # (https://github.com/scikit-learn/scikit-learn/blob/36958fb240fbe435673a9e3c52e769f01f36bec0/sklearn/metrics/_ranking.py#L588)
+    Falls back to standard score if all labels are present: follows the sklearn implementation but not restricted to ROC AUC and does not require probabilities to sum to 1 (https://github.com/scikit-learn/scikit-learn/blob/36958fb240fbe435673a9e3c52e769f01f36bec0/sklearn/metrics/_ranking.py#L588)
 
     Parameters:
-    - `y_true`: true multiclass labels as a 1d array.
-    - `y_score`: predicted probabilities for each class as a 2d array. (In binary case, you can instead provide 1d array, like what sklearn metric functions expect.)
-    - `labels`: y_score column names. `labels` defaults to `np.unique(y_true)`.
-    - `average`: can be `macro` or `weighted`.
-    - `multiclass`: can be `ovo` or `ovr`.
+
+    - ``y_true``: true multiclass labels as a 1d array.
+    - ``y_score``: predicted probabilities for each class as a 2d array. (In binary case, you can instead provide 1d array, like what sklearn metric functions expect.)
+    - ``labels``: y_score column names. ``labels`` defaults to ``np.unique(y_true)``.
+    - ``average``: can be ``macro`` or ``weighted``.
+    - ``multiclass``: can be ``ovo`` or ``ovr``.
     """
+    # TODO: Docs for "Also handles `y_true` not including all the classes listed in `labels`"
     y_score = np.array(y_score)  # defensive cast to numpy array
 
     if labels is None:
@@ -203,15 +203,17 @@ def roc_auc_score(
     If binary: falls back to standard AUC as implemented in sklearn.
 
     Differences from sklearn implementation:
+
     - Accommodates missing classes in y_true or y_score. (see _multiclass_score docs)
     - Does not require y_score rows to sum to 1.
 
     Parameters:
-    - `y_true`: true multiclass labels as a 1d array.
-    - `y_score`: predicted probabilities for each class as a 2d array. (In binary case, you can instead provide 1d array, like what sklearn metric functions expect.)
-    - `labels`: y_score columns must be in `labels` parameter order. `labels` defaults to `np.unique(y_true)`.
-    - `average`: can be `macro` or `weighted`
-    - `multiclass='ovo'`: only OvO is supported.
+
+    - ``y_true``: true multiclass labels as a 1d array.
+    - ``y_score``: predicted probabilities for each class as a 2d array. (In binary case, you can instead provide 1d array, like what sklearn metric functions expect.)
+    - ``labels``: y_score columns must be in ``labels`` parameter order. ``labels`` defaults to ``np.unique(y_true)``.
+    - ``average``: can be ``macro`` or ``weighted``
+    - ``multiclass='ovo'``: only OvO is supported.
     """
     return _multiclass_score(
         binary_score_func=sklearn.metrics.roc_auc_score,
@@ -241,11 +243,12 @@ def auprc(
     If binary: falls back to standard auPRC as implemented in sklearn.
 
     Parameters:
-    - `y_true`: true multiclass labels as a 1d array.
-    - `y_score`: predicted probabilities for each class as a 2d array. (In binary case, you can instead provide 1d array, like what sklearn metric functions expect.)
-    - `labels`: y_score columns must be in `labels` parameter order. `labels` defaults to `np.unique(y_true)`.
-    - `average`: can be `macro` or `weighted`
-    - `multiclass='ovo'`: only OvO is supported.
+
+    - ``y_true``: true multiclass labels as a 1d array.
+    - ``y_score``: predicted probabilities for each class as a 2d array. (In binary case, you can instead provide 1d array, like what sklearn metric functions expect.)
+    - ``labels``: y_score columns must be in ``labels`` parameter order. ``labels`` defaults to ``np.unique(y_true)``.
+    - ``average``: can be ``macro`` or ``weighted``
+    - ``multiclass='ovo'``: only OvO is supported.
     """
     return _multiclass_score(
         binary_score_func=sklearn.metrics.average_precision_score,
