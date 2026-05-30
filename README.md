@@ -1,5 +1,10 @@
 # Multiclass Metrics
 
+[![](https://img.shields.io/pypi/v/multiclass_metrics.svg)](https://pypi.python.org/pypi/multiclass_metrics)
+[![CI](https://github.com/maximz/multiclass-metrics/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/maximz/multiclass-metrics/actions/workflows/ci.yaml)
+[![](https://img.shields.io/badge/docs-here-blue.svg)](https://multiclass-metrics.maximz.com)
+[![](https://img.shields.io/github/stars/maximz/multiclass-metrics?style=social)](https://github.com/maximz/multiclass-metrics)
+
 `multiclass_metrics` provides scikit-learn-style metrics for probabilistic
 binary and multiclass classifiers. Its main purpose is to make ROC-AUC and
 area under the precision-recall curve usable when the classes present in
