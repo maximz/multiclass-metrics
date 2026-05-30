@@ -10,7 +10,7 @@ from sklearn.metrics._base import _average_multiclass_ovo_score, _average_binary
 
 __author__ = """Maxim Zaslavsky"""
 __email__ = "maxim@maximz.com"
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 # Set default logging handler to avoid "No handler found" warnings.
 from logging import NullHandler
